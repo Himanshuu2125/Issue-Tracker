@@ -172,6 +172,3 @@ def update_issue(issue_id: int, updated_issue: IssueUpdate):
 
     issues_db[issue_id] = issue
     return issue
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
