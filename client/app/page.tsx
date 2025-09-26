@@ -23,7 +23,7 @@ const STATUSES = ['Open', 'In Progress', 'Done'];
 const PRIORITIES = ['Low', 'Medium', 'High'];
 const ASSIGNEES = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Heidi'];
 
-const API_BASE = 'http://127.0.0.1:8000'; // change if backend at different host
+const API_BASE = '/api';
 
 type ModalProps = {
   title: string;
