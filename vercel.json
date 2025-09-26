@@ -10,14 +10,8 @@
       "use": "@vercel/python"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "server/main.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/$1"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server/main.py" },
+    { "source": "/(.*)", "destination": "/client/$1" }
   ]
 }
