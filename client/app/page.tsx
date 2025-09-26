@@ -34,7 +34,18 @@ type ModalProps = {
 };
 
 const Modal = ({ title, children, show, onClose, isDarkMode }: ModalProps) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   if (!show) return null;
+
+  if (!isMounted) {
+    return null;
+  }
+
   return createPortal(
     <div className={`fixed inset-0 z-50 overflow-y-auto h-full w-full flex items-center justify-center transition-opacity duration-300 ${isDarkMode ? 'bg-black bg-opacity-75' : 'bg-gray-600 bg-opacity-50'}`}>
       <div className={`relative p-5 border w-full max-w-lg shadow-lg rounded-md ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
@@ -60,6 +71,16 @@ type DrawerProps = {
 };
 
 const Drawer = ({ title, children, show, onClose, isDarkMode }: DrawerProps) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return createPortal(
     <div className={`fixed inset-0 z-40 transition-transform duration-300 ease-in-out ${show ? 'translate-x-0' : 'translate-x-full'}`}>
       <div className={`absolute inset-0`} onClick={onClose}></div>
@@ -153,7 +174,20 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   }, [isDarkMode]);
 
   const fetchIssues = async () => {
