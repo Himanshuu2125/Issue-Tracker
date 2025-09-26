@@ -43,7 +43,7 @@ class Issue(IssueBase):
     updatedAt: datetime.datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class IssueListResponse(BaseModel):
     items: List[Issue]
