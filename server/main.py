@@ -12,17 +12,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Configure CORS to allow requests from the React frontend
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # --- Data Models (Using Pydantic) ---
 class IssueBase(BaseModel):
     title: str = Field(..., min_length=1)
