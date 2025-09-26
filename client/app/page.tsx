@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, Plus, Sun, Moon, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, X, PanelRightClose } from 'lucide-react';
 
@@ -25,7 +25,15 @@ const ASSIGNEES = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 
 
 const API_BASE = 'http://127.0.0.1:8000'; // change if backend at different host
 
-const Modal = ({ title, children, show, onClose, isDarkMode }: any) => {
+type ModalProps = {
+  title: string;
+  children: React.ReactNode;
+  show: boolean;
+  onClose: () => void;
+  isDarkMode: boolean;
+};
+
+const Modal = ({ title, children, show, onClose, isDarkMode }: ModalProps) => {
   if (!show) return null;
   return createPortal(
     <div className={`fixed inset-0 z-50 overflow-y-auto h-full w-full flex items-center justify-center transition-opacity duration-300 ${isDarkMode ? 'bg-black bg-opacity-75' : 'bg-gray-600 bg-opacity-50'}`}>
@@ -43,7 +51,15 @@ const Modal = ({ title, children, show, onClose, isDarkMode }: any) => {
   );
 };
 
-const Drawer = ({ title, children, show, onClose, isDarkMode }: any) => {
+type DrawerProps = {
+  title: string;
+  children: React.ReactNode;
+  show: boolean;
+  onClose: () => void;
+  isDarkMode: boolean;
+};
+
+const Drawer = ({ title, children, show, onClose, isDarkMode }: DrawerProps) => {
   return createPortal(
     <div className={`fixed inset-0 z-40 transition-transform duration-300 ease-in-out ${show ? 'translate-x-0' : 'translate-x-full'}`}>
       <div className={`absolute inset-0`} onClick={onClose}></div>
@@ -61,7 +77,12 @@ const Drawer = ({ title, children, show, onClose, isDarkMode }: any) => {
   );
 };
 
-const StatusBadge = ({ status, isDarkMode }: any) => {
+type StatusBadgeProps = {
+  status: string;
+  isDarkMode: boolean;
+};
+
+const StatusBadge = ({ status, isDarkMode }: StatusBadgeProps) => {
   const colors: Record<string, string> = {
     Open: `bg-blue-100 text-blue-800 ${isDarkMode ? 'dark:bg-blue-900/50 dark:text-blue-300' : ''}`,
     'In Progress': `bg-yellow-100 text-yellow-800 ${isDarkMode ? 'dark:bg-yellow-900/50 dark:text-yellow-300' : ''}`,
@@ -70,8 +91,13 @@ const StatusBadge = ({ status, isDarkMode }: any) => {
   return <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colors[status] || `bg-gray-100 text-gray-800 ${isDarkMode ? 'dark:text-gray-200 dark:bg-gray-900' : ''}`}`}>{status}</span>;
 };
 
-const PriorityIcon = ({ priority, isDarkMode }: any) => {
-  const icons: any = {
+type PriorityIconProps = {
+  priority: string;
+  isDarkMode: boolean;
+};
+
+const PriorityIcon = ({ priority, isDarkMode }: PriorityIconProps) => {
+  const icons: Record<string, React.ReactNode> = {
     Low: <ChevronDown className={`w-5 h-5 ${isDarkMode ? 'text-green-400' : 'text-green-500'}`} />,
     Medium: <span className={`w-5 h-5 ${isDarkMode ? 'text-yellow-400' : 'text-yellow-500'}`}>–</span>,
     High: <ChevronUp className={`w-5 h-5 ${isDarkMode ? 'text-red-400' : 'text-red-500'}`} />,
@@ -94,7 +120,12 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const JsonViewer = ({ data, isDarkMode }: any) => {
+type JsonViewerProps = {
+  data: any;
+  isDarkMode: boolean;
+};
+
+const JsonViewer = ({ data, isDarkMode }: JsonViewerProps) => {
   return (
     <pre className={`p-6 rounded-lg overflow-x-auto font-mono text-sm ${isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-100 text-gray-800'}`}>
       {JSON.stringify(data, null, 2)}
@@ -233,7 +264,7 @@ export default function Home() {
         <header className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold">Issue Tracker</h1>
-            <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'} mt-1`}>Manage your project's issues with ease.</p>
+            <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'} mt-1`}>Manage your project&apos;s issues with ease.</p>
           </div>
           <button onClick={() => { setIsDarkMode(!isDarkMode); localStorage.setItem('theme', (!isDarkMode).toString() ? 'dark' : 'light'); }} className={`p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${isDarkMode ? 'text-gray-400 hover:bg-gray-700 focus:ring-gray-600 focus:ring-offset-gray-900' : 'text-gray-500 hover:bg-gray-200 focus:ring-gray-400 focus:ring-offset-gray-100'}`}>
             {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
