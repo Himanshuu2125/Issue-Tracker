@@ -121,7 +121,7 @@ const formatDate = (dateString: string) => {
 };
 
 type JsonViewerProps = {
-  data: any;
+  data: Record<string, unknown> | Array<unknown>;
   isDarkMode: boolean;
 };
 
