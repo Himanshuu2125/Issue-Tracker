@@ -81,11 +81,11 @@ generate_initial_issues()
 
 # --- Endpoints ---
 @app.get("/health")
-def health_check():
+async def health_check():
     return {"status": "ok"}
 
 @app.get("/issues", response_model=IssueListResponse)
-def read_issues(
+async def read_issues(
     q: Optional[str] = None,
     status: Optional[str] = None,
     priority: Optional[str] = None,
@@ -138,14 +138,14 @@ def read_issues(
     return {"items": paginated_issues, "total": total}
 
 @app.get("/issues/{issue_id}", response_model=Issue)
-def read_issue(issue_id: int):
+async def read_issue(issue_id: int):
     issue = issues_db.get(issue_id)
     if not issue:
         raise HTTPException(status_code=404, detail="Issue not found")
     return issue
 
 @app.post("/issues", response_model=Issue, status_code=201)
-def create_issue(issue: IssueCreate):
+async def create_issue(issue: IssueCreate):
     global next_id
     new_issue = Issue(
         id=next_id,
@@ -158,7 +158,7 @@ def create_issue(issue: IssueCreate):
     return new_issue
 
 @app.put("/issues/{issue_id}", response_model=Issue)
-def update_issue(issue_id: int, updated_issue: IssueUpdate):
+async def update_issue(issue_id: int, updated_issue: IssueUpdate):
     issue = issues_db.get(issue_id)
     if not issue:
         raise HTTPException(status_code=404, detail="Issue not found")
